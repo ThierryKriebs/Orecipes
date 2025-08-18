@@ -19,6 +19,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      # On reseigne la variable d'environnement configurée dans `Settings > environment`
+      VITE_API_BASE_URL: ${{vars.VITE_API_BASE_URL}}
+
     steps:
       - name: Checkout du code
         uses: actions/checkout@v5.0.0
