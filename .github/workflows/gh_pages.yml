@@ -2,7 +2,7 @@ name: Deploy to Surge
 
 on: 
   push:
-  branches: ["S1903-gh-pages-surge"]
+    branches: ["S1903-gh-pages-surge"]
 
   # Déclenchement manuel depuis l'onglet " Actions " de github:
   workflow_dispatch:
