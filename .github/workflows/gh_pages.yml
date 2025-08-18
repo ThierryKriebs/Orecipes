@@ -10,6 +10,11 @@ on:
 permissions:
   contents: read
   
+  pages: write
+  # Permet de créer un token
+  # (peut être nécessaire pour interagir avec d'autres services ou APIs externes pour prouver l'identité du workflow ; ex. : Google Cloud, authentification OAuth…)
+  id-token: write
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -61,5 +66,22 @@ jobs:
           path: dist
 
           
-      
-    
+# Tâche pour déployer sur GH Pages
+  deploy:
+    needs: build  # Cette tâche dépend du succès de la tâche `build`
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    env:
+      # On reseigne la variable d'environnement configurée dans `Settings > environment`
+      VITE_API_BASE_URL: ${{vars.VITE_API_BASE_URL}}
+
+    steps:
+      # Déploiement de l'artefact précédemment créé sur GH Pages
+      - name: 🚀 Déploiement sur GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4.0.5
+
+      # Affichage de l'URL du site
+      - name: 🔗 URL du site déployé
+        run: echo "🔗 Votre site est disponible à ${{ steps.deployment.outputs.page_url }}"
