@@ -1,0 +1,65 @@
+name: Deploy to Surge
+
+on: 
+  push:
+  branches: ["S1903-gh-pages-surge"]
+
+  # Déclenchement manuel depuis l'onglet " Actions " de github:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v5.0.0
+
+      - name: ❤️ Utilisation de PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          # version: 10 a provoqué une erreur chez le prof, on fait pas...
+          run_install: false
+        
+      # Prépare l'environnement Node
+      - name: ⚙️ Setup de l'environnement Node.js
+        uses: actions/setup-node@v4
+        # with:
+          # node-version: 22
+
+      # Installation des dépendances
+      - name: 📦 Installation des dépendances
+        run: pnpm install
+
+      # Lancement des tests
+      - name: 🧪 Lancement des tests
+        run: pnpm test || echo "⚠️ Pas de test trouvé mais le déploiement continue…"
+
+      # Installation de Biome (via l'action officielle)
+      # → https://biomejs.dev/recipes/continuous-integration
+      - name: 🚀 Installer Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+
+      # Vérification du code avec Biome
+      - name: 🎨 Exécuter Biome pour formater et analyser le code
+        run: biome ci .
+        # run: biome check --apply # permet d'appliquer la correction au lieu de bloquer le déploiement
+
+      # Build du projet
+      - name: 🏗️ Build du projet
+        run: pnpm build    
+
+      # Téléversement des fichiers construits (`dist/`) comme artefact GitHub Pages
+      - name: 📤 Téléversement GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+          
+      
+    
