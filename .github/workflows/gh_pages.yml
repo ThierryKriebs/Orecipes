@@ -13,6 +13,7 @@ on:
 permissions:
   # Permission de lire le contenu du dépôt
   # (nécessaire pour le processus de checkout du code, comme dans l'étape actions/checkout@v4)
+  
   contents: read
   # Permission d'écrire sur GH Pages
   # (essentiel pour que le processus de déploiement fonctionne correctement)
