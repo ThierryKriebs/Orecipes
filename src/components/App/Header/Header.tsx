@@ -77,6 +77,7 @@ export default function Header({
           <button type="submit" className="button">
             Se connecter
           </button>
+          Test de déploiement
         </form>
       )}
     </header>
