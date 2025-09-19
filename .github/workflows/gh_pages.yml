@@ -4,7 +4,7 @@ name: Deploy to GitHub Pages
 on:
   # Déclenchement lors d'un push mais uniquement sur la branche `S19E03-gh-pages`
   push:
-    branches: ["S19E03-gh-pages-surge"]
+    branches: ["S1903-gh-pages-surge"]
 
   # Autorisation de déclencher manuellement du workflow depuis l'onglet « Actions » du dépôt GH
   workflow_dispatch:
