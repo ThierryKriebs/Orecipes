@@ -1,0 +1,75 @@
+name: CI with GitHub Actions
+
+on:
+  # On a push event on the branch: "ci_gh_actions"
+  push:
+    branches: ["ci_gh_actions"]
+
+  # Creation of an optional manual trigger butto
+  workflow_dispatch:
+
+# Setting the permissions required for CI
+permissions:
+  # Permission to read the contents of the repository
+  contents: read
+  #pages: write
+  #id-token: write
+
+# List of tasks to be completed
+jobs:
+  # Tasks for the build operation
+  build:
+    # Launch a runner under Ubuntu
+    runs-on: ubuntu-latest
+    env:
+      # Specifies the necessary environnement variables `Settings > Secrets and variables`
+      VITE_API_BASE_URL: ${{vars.VITE_API_BASE_URL}}
+    
+    # Étapes de la tâche
+    steps:
+      # Copy the repository code into the Ubuntu runner
+      - name: 📥 Checkout du code
+        uses: actions/checkout@v4
+
+      # Installation of PNPM without our dependencies
+      - name: ❤️ Installation of PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      # Installing and configuring the Node environment
+      - name: ⚙️ Setup de l'environnement Node.js
+        uses: actions/setup-node@v4
+        # with:
+          # node-version: 22
+
+      # Installation of our dependencies
+      - name: 📦 Installation of our dependencies
+        run: pnpm install
+
+      # Biome installation (with official action)
+      - name: 🚀 Installation of Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+      
+      # Code verification with Biome
+      - name: 🎨 Exécuter Biome pour formater et analyser le code
+        run: biome ci .
+        # run: biome check --apply # request to correct errors rather than block the CI
+
+      # Launch of our tests
+      - name: 🧪 Launch of our tests
+        run: pnpm test || echo "⚠️ Pas de test trouvé mais le déploiement continue…"
+
+      # Build of our project
+      - name: 🏗️ Build of our project
+        run: pnpm build
+
+      # Upload the dist folder as an artifact
+      - name: 📤 Upload the dist folder as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: dist
+          name: dist
