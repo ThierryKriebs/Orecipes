@@ -12,9 +12,7 @@ on:
 permissions:
   # Permission to read the contents of the repository
   contents: read
-  #pages: write
-  #id-token: write
-
+ 
 # List of tasks to be completed
 jobs:
   # Tasks for the build operation
@@ -55,7 +53,7 @@ jobs:
           version: latest
       
       # Code verification with Biome
-      - name: 🎨 Exécuter Biome pour formater et analyser le code
+      - name: 🎨 Run Biome to format and analyse the code
         run: biome ci .
         # run: biome check --apply # request to correct errors rather than block the CI
 
