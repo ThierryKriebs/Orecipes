@@ -12,6 +12,9 @@ on:
 permissions:
   # Permission to read the contents of the repository
   contents: read
+
+  # (essentiel pour que le processus de déploiement fonctionne correctement)
+  pages: write
  
 # List of tasks to be completed
 jobs:
