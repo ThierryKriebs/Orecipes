@@ -74,7 +74,8 @@ jobs:
   
   deploy:
     needs: build
-
+    runs-on: ubuntu-latest
+    
     steps:
       # Deploy the artefact
       - name: Deploiement on GitHub Pages
