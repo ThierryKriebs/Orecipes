@@ -3,7 +3,7 @@ name: CI with GitHub Actions
 on:
   # On a push event on the branch: "ci_gh_actions"
   push:
-    branches: ["ci_gh_actions"]
+    branches: ["cicd_surge"]
 
   # Creation of an optional manual trigger butto
   workflow_dispatch:
