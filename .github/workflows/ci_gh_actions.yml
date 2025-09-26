@@ -71,3 +71,16 @@ jobs:
         with:
           path: dist
           name: dist
+  
+  deploy:
+    needs: build
+
+    steps:
+      # Deploy the artefact
+      - name: Deploiement on GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4.0.5
+
+      #Display URL
+      - name: 🔗 URL
+        run echo "🔗 URL ${{steps.deployment.outputs.page_url }}"
