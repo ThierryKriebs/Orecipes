@@ -15,6 +15,10 @@ permissions:
 
   # (essentiel pour que le processus de déploiement fonctionne correctement)
   pages: write
+
+  # Permet de créer un token
+  # (peut être nécessaire pour interagir avec d'autres services ou APIs externes pour prouver l'identité du workflow ; ex. : Google Cloud, authentification OAuth…)
+  id-token: write
  
 # List of tasks to be completed
 jobs:
