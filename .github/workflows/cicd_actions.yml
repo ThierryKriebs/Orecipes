@@ -12,12 +12,8 @@ on:
 permissions:
   # Permission to read the contents of the repository
   contents: read
-
-  # (essentiel pour que le processus de déploiement fonctionne correctement)
-  pages: write
-
-  # Permet de créer un token
-  # (peut être nécessaire pour interagir avec d'autres services ou APIs externes pour prouver l'identité du workflow ; ex. : Google Cloud, authentification OAuth…)
+ 
+  # Generate an authentication token
   id-token: write
  
 # List of tasks to be completed
@@ -74,22 +70,32 @@ jobs:
 
       # Upload the dist folder as an artifact
       - name: 📤 Upload the dist folder as an artifact
-        #uses: actions/upload-artifact@v4
-        uses: actions/upload-pages-artifact@v4.0.0
+        uses: actions/upload-artifact@v4
         with:
           path: dist
-          #name: dist
+          name: dist 
   
   deploy:
     needs: build
     runs-on: ubuntu-latest
     
     steps:
-      # Deploy the artefact
-      - name: Deploiement on GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4.0.5
+      # Installation de Surge
+      - name: Install Surge
+        run: pnpm install --global surge
 
-      #Display URL
-      - name: 🔗 URL
-        run: echo 🔗 URL ${{ steps.deployment.outputs.page_url }}
+      # Déploiement
+      # (https://thecodersblog.com/deploying-static-website-surge-github-actions)
+      # (https://dev.to/usamasubhani/deploy-react-apps-on-surge-using-github-actions-free-2h7i)
+      # (https://github.com/yavisht/deploy-via-surge.sh-github-action-template)
+      - name: Déploiement
+        run: surge ./dist ${{ vars.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+
+      # # Deploy the artefact
+      # - name: Deploiement on GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4.0.5
+
+      # #Display URL
+      # - name: 🔗 URL
+      #   run: echo 🔗 URL ${{ steps.deployment.outputs.page_url }}
