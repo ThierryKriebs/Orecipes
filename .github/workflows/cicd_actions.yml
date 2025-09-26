@@ -93,6 +93,13 @@ jobs:
       # Installation de Surge
       - name: Install Surge
         run: pnpm install --global surge
+      
+      # Download artifact "dist" generated with job "build"
+      - name: 📥 Download artifact "dist"
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
 
       # Déploiement
       # (https://thecodersblog.com/deploying-static-website-surge-github-actions)
