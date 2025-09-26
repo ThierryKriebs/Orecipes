@@ -83,4 +83,4 @@ jobs:
 
       #Display URL
       - name: 🔗 URL
-        run echo "🔗 URL ${{steps.deployment.outputs.page_url }}"
+        run: echo 🔗 URL ${{ steps.deployment.outputs.page_url }}
