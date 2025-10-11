@@ -1,4 +1,4 @@
-name: CI with GitHub Actions
+name: CICD with GitHub Actions and Surge
 
 on:
   # On a push event on the branch: "ci_gh_actions"
@@ -18,7 +18,7 @@ permissions:
  
 # List of tasks to be completed
 jobs:
-  # Tasks for the build operation
+  # Task build operation
   build:
     # Launch a runner under Ubuntu
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
       # Specifies the necessary environnement variables `Settings > Secrets and variables`
       VITE_API_BASE_URL: ${{vars.VITE_API_BASE_URL}}
     
-    # Étapes de la tâche
+    # Task steps
     steps:
       # Copy the repository code into the Ubuntu runner
       - name: 📥 Checkout du code
@@ -62,7 +62,7 @@ jobs:
 
       # Launch of our tests
       - name: 🧪 Launch of our tests
-        run: pnpm test || echo "⚠️ Pas de test trouvé mais le déploiement continue…"
+        run: pnpm test || echo "⚠️ No test found, but deployment continues..."
 
       # Build of our project
       - name: 🏗️ Build of our project
@@ -78,9 +78,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
-    
-    
+  
     steps:
       # Installation of PNPM without our dependencies
       - name: ❤️ Installation of PNPM
@@ -88,8 +86,7 @@ jobs:
         with:
           version: 10
           run_install: false
-      
-
+    
       # Installation de Surge
       - name: Install Surge
         run: pnpm install --global surge
@@ -101,12 +98,13 @@ jobs:
           name: dist
           path: dist
 
-      # Déploiement
+      # Deploiement
       # (https://thecodersblog.com/deploying-static-website-surge-github-actions)
       # (https://dev.to/usamasubhani/deploy-react-apps-on-surge-using-github-actions-free-2h7i)
       # (https://github.com/yavisht/deploy-via-surge.sh-github-action-template)
       - name: Déploiement
-        run: surge ./dist ${{ vars.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+        run: surge ./dist ${{ vars.SURGE_DOMAIN }}/
+         --token ${{ secrets.SURGE_TOKEN }}
 
       # # Deploy the artefact
       # - name: Deploiement on GitHub Pages
