@@ -1,7 +1,7 @@
 name: CICD with GitHub Actions and Surge
 
 on:
-  # On a push event on the branch: "ci_gh_actions"
+  # On a push event on the branch: "cicd_surge"
   push:
     branches: ["cicd_surge"]
 
@@ -102,7 +102,7 @@ jobs:
       # (https://thecodersblog.com/deploying-static-website-surge-github-actions)
       # (https://dev.to/usamasubhani/deploy-react-apps-on-surge-using-github-actions-free-2h7i)
       # (https://github.com/yavisht/deploy-via-surge.sh-github-action-template)
-      - name: Déploiement
+      - name: Deploiement
         run: surge ./dist ${{ vars.SURGE_DOMAIN }}/
          --token ${{ secrets.SURGE_TOKEN }}
 
